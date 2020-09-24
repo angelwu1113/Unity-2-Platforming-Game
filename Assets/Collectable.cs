@@ -8,5 +8,5 @@ abstract public class Collectable : MonoBehaviour
    public string description;
    public GameObject player;
 
-   public abstract void use();
+   public abstract void Use();
 }
