@@ -6,13 +6,14 @@ using TMPro;
 
 public class playerManager : MonoBehaviour
 {
-    private List<Collectable> inventory = new List<Collectable>();
+    //private List<Collectable> inventory = new List<Collectable>();
     public TextMeshProUGUI inventoryText;
     public TextMeshProUGUI descriptionText;
     private int currentIndex;
     // Player specific variables
-    private int health;
-    private int score;
+    //private int health;
+    //private int score;
+    PlayerInfo info;
 
     // Boolean values
     private bool isGamePaused = false;
@@ -27,6 +28,11 @@ public class playerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        info = GameObject.FindWithTag("Info").GetComponent<PlayerInfo>();
+        foreach(Collectable item in info.inventory)
+        {
+            item.player = this.gameObject;
+        }
         // Makes sure game is "unpaused"
         isGamePaused = false;
         Time.timeScale = 1.0f;
@@ -35,50 +41,50 @@ public class playerManager : MonoBehaviour
         FindAllMenus();
 
         //Start player with initial health and score
-        health = 100;
-        score = 0;
+        //health = 100;
+        //score = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        healthText.text = "Health: " + health.ToString();
-        scoreText.text  = "Score:  " + score.ToString();
+        healthText.text = "Health: " + info.health.ToString();
+        scoreText.text  = "Score:  " + info.score.ToString();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseGame();
         }
-        if (health <= 0)
+        if (info.health <= 0)
         {
             LoseGame();
         }
 
-        if  (inventory.Count == 0)
+        if  (info.inventory.Count == 0)
         {
             inventoryText.text = "Course Selection: None";
             descriptionText.text = "";
         }
         else
         {
-            inventoryText.text = "Current Selection: " + inventory[currentIndex].collectableName + " " + currentIndex.ToString();
-            descriptionText.text = "Press [E] to " + inventory[currentIndex].description;
+            inventoryText.text = "Current Selection: " + info.inventory[currentIndex].collectableName + " " + currentIndex.ToString();
+            descriptionText.text = "Press [E] to " + info.inventory[currentIndex].description;
         }
 
         if(Input.GetKeyDown(KeyCode.E))
         {
-            if (inventory.Count > 0)
+            if (info.inventory.Count > 0)
             {
-                inventory[currentIndex].Use();
-                inventory.RemoveAt(currentIndex);
-                currentIndex = (currentIndex - 1) % inventory.Count;
+                info.inventory[currentIndex].Use();
+                info.inventory.RemoveAt(currentIndex);
+                currentIndex = (currentIndex - 1) % info.inventory.Count;
             }
         }
 
         if(Input.GetKeyDown(KeyCode.I))
         {
-            if(inventory.Count > 0)
+            if(info.inventory.Count > 0)
             {
-            currentIndex = (currentIndex + 1) % inventory.Count;
+            currentIndex = (currentIndex + 1) % info.inventory.Count;
             }
         }
     
@@ -144,12 +150,12 @@ public class playerManager : MonoBehaviour
 
     public void ChangeHealth(int value)
     {
-        health += value;
+        info.health += value;
     }
 
     public void ChangeScore(int value)
     {
-        score += value;
+        info.score += value;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -158,7 +164,7 @@ public class playerManager : MonoBehaviour
         {
             collision.GetComponent<Collectable>().player = this.gameObject;
             collision.gameObject.transform.parent = null;
-            inventory.Add(collision.GetComponent<Collectable>());
+            info.inventory.Add(collision.GetComponent<Collectable>());
             collision.gameObject.SetActive(false);
 
         }

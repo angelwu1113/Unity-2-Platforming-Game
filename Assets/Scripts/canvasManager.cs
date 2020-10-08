@@ -28,13 +28,13 @@ public class canvasManager : MonoBehaviour
         //SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex+1)%SceneManager.sceneCountInBuildSettings);
     }
 
-    IEnumeratur FadeEffect(int SceneToLoad)
+    IEnumerator FadeEffect(int SceneToLoad)
     {
         FadePanel.SetActive(true);
         for(int i = 0; i < 100; i++)
         {
-            FadePanel.GetComponent<CanvasGroup>().alpha = (float)i*0.01;
-            yield return new WaitForSecondRealtime(0.01f);
+            FadePanel.GetComponent<CanvasGroup>().alpha = (float)i*0.01f;
+            yield return new WaitForSecondsRealtime(0.01f);
         }
         SceneManager.LoadScene(SceneToLoad);
     }
