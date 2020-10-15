@@ -76,7 +76,7 @@ public class playerManager : MonoBehaviour
             {
                 info.inventory[currentIndex].Use();
                 info.inventory.RemoveAt(currentIndex);
-                currentIndex = (currentIndex - 1) % info.inventory.Count;
+                currentIndex = (currentIndex + 1) % info.inventory.Count;
             }
         }
 

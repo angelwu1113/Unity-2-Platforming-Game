@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
-    public int health;
-    public int score;
+    public int health = 100;
+    public int score = 0;
     public List<Collectable> inventory;
     void Start()
     {

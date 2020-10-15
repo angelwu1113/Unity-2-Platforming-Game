@@ -7,7 +7,7 @@ public class canvasManager : MonoBehaviour
 {
     public GameObject FadePanel;
 
-    private void start()
+    private void Start()
     {
         FadePanel.SetActive(false);
     }
